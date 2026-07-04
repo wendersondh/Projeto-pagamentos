@@ -4,6 +4,7 @@ import br.edu.ifpb.servico_pagamentos.controller.request.ClienteRequest;
 import br.edu.ifpb.servico_pagamentos.controller.response.AsaasClienteResponse;
 import br.edu.ifpb.servico_pagamentos.controller.response.ClienteResponse;
 import br.edu.ifpb.servico_pagamentos.domain.Cliente;
+import br.edu.ifpb.servico_pagamentos.exception.ClienteJaCadastradoException;
 import br.edu.ifpb.servico_pagamentos.mapper.ClienteMapper;
 import br.edu.ifpb.servico_pagamentos.repository.ClienteRepository;
 import jakarta.transaction.Transactional;
@@ -18,17 +19,13 @@ public class ClienteService {
     private final ClienteRepository clienteRepository;
     private final AsaasPaymentService asaasPaymentService;
 
-    public ClienteResponse criarCliente(
-            ClienteRequest request) {
+    public ClienteResponse criarCliente(ClienteRequest request) {
 
-        if (clienteRepository.existsByCpfCnpj(
-                request.getCpfCnpj())) {
-            throw new RuntimeException(
-                    "Cliente já cadastrado.");
+        if (clienteRepository.existsByCpfCnpj(request.getCpfCnpj())) {
+            throw new ClienteJaCadastradoException("Cliente já cadastrado.");
         }
 
-        AsaasClienteResponse asaas =
-                asaasPaymentService.criarCliente(request);
+        AsaasClienteResponse asaas = asaasPaymentService.criarCliente(request);
 
         Cliente cliente = Cliente.builder()
                 .name(request.getName())
@@ -41,5 +38,17 @@ public class ClienteService {
         cliente = clienteRepository.save(cliente);
 
         return ClienteMapper.toResponse(cliente);
+    }
+
+    public ClienteResponse buscarCliente(Long id) {
+        Cliente cliente = clienteRepository.findById(id)
+                .orElseThrow(() ->
+                        new RuntimeException("Cliente não encontrado."));
+
+        return ClienteMapper.toResponse(cliente);
+    }
+    public ClienteResponse listarCliente() {
+        return clienteRepository.findAll().stream().map(ClienteMapper::toResponse).findFirst().orElseThrow(() ->
+                new RuntimeException("Nenhum cliente foi encontrado."));
     }
 }

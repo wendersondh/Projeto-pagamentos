@@ -16,6 +16,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Service
 @AllArgsConstructor
@@ -80,5 +81,19 @@ public class PagamentoService {
 
         return PagamentoMapper
                 .toResponse(pagamento);
+    }
+
+    public List<PagamentoResponse> listarPagamentos() {
+        return pagamentoRepository.findAll()
+                .stream()
+                .map(PagamentoMapper::toResponse)
+                .toList();
+    }
+
+    public PagamentoResponse buscarPagamento(Long id) {
+        Pagamento pagamento = pagamentoRepository.findById(id).orElseThrow(() ->
+                new RuntimeException("Pagamento não encontrado."));
+
+        return PagamentoMapper.toResponse(pagamento);
     }
 }

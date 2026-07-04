@@ -8,6 +8,8 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/pagamentos")
 @AllArgsConstructor
@@ -24,5 +26,17 @@ public class PagamentoController {
                 pedidoId,
                 request
         );
+    }
+
+    @GetMapping
+    @ResponseStatus(HttpStatus.OK)
+    public List<PagamentoResponse> listarPagamentos() {
+        return pagamentoService.listarPagamentos();
+    }
+
+    @GetMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public PagamentoResponse buscarPagamento(@PathVariable Long id) {
+        return pagamentoService.buscarPagamento(id);
     }
 }
