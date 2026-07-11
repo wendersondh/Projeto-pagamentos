@@ -7,13 +7,11 @@ import br.edu.ifpb.servico_pagamentos.domain.Cliente;
 import br.edu.ifpb.servico_pagamentos.exception.ClienteJaCadastradoException;
 import br.edu.ifpb.servico_pagamentos.mapper.ClienteMapper;
 import br.edu.ifpb.servico_pagamentos.repository.ClienteRepository;
-import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
 @AllArgsConstructor
-@Transactional
 public class ClienteService {
 
     private final ClienteRepository clienteRepository;

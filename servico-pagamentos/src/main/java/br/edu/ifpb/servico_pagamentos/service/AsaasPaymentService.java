@@ -50,14 +50,21 @@ public class AsaasPaymentService {
         }
     }
 
-    public AsaasPaymentResponse criarCobranca(
-            AsaasPaymentRequest request) {
+    public AsaasPaymentResponse criarCobranca(AsaasPaymentRequest request) {
+        try {
+            return asaasRestClient.post()
+                    .uri("/payments")
+                    .body(request)
+                    .retrieve()
+                    .body(AsaasPaymentResponse.class);
 
-        return asaasRestClient.post()
-                .uri("/payments")
-                .body(request)
-                .retrieve()
-                .body(AsaasPaymentResponse.class);
+        } catch (HttpStatusCodeException ex) {
+            String mensagem = extrairMensagemErro(ex);
+            throw new AsaasException(mensagem);
+
+        } catch (RestClientException ex) {
+            throw new AsaasException("Não foi possível se comunicar com o Asaas.");
+        }
     }
 
     public AsaasPaymentResponse consultarPagamento(

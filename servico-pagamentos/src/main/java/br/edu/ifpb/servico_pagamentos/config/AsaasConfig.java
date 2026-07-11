@@ -17,6 +17,7 @@ public class AsaasConfig {
                 .baseUrl(baseUrl)
                 .defaultHeader("access_token", apiKey)
                 .defaultHeader("Content-Type", "application/json")
+                .defaultHeader("User-Agent", "servico-pagamentos-ifpb")
                 .build();
     }
 }

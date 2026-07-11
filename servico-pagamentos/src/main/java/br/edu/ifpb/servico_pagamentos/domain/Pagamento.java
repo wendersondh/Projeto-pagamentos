@@ -19,7 +19,6 @@ public class Pagamento {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // ID da cobrança no Asaas
     @Column(unique = true)
     private String asaasPaymentId;
 

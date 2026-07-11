@@ -2,6 +2,7 @@ package br.edu.ifpb.servico_pagamentos.controller.response;
 
 
 import br.edu.ifpb.servico_pagamentos.enun.BillingType;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -19,6 +20,7 @@ public class PagamentoResponse {
     private BillingType billingType;
     private String status;
     private BigDecimal value;
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate dueDate;
     private Long pedidoId;
 }
