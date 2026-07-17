@@ -22,8 +22,8 @@ public class OpenApiConfig {
                                 """)
                         .version("v1.0.0")
                         .contact(new Contact()
-                                .name("Equipe do projeto")
-                                .email("equipe@exemplo.com"))
+                                .name("Mariane Mireli Oliveira e Silva,Wenderson Dhomini Deoliveira Soares,Alexandre Gonçalves Evangelista")
+                                .email("evangelista.alexandre@academico.ifpb.edu.br"))
                         .license(new License()
                                 .name("Uso acadêmico - IFPB")));
     }
