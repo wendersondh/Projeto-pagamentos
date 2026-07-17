@@ -34,11 +34,10 @@ public class PagamentoService {
         Pedido pedido =
                 pedidoRepository.findById(pedidoId)
                         .orElseThrow(() ->
-                                new RuntimeException(
-                                        "Pedido não encontrado"));
+                                new br.edu.ifpb.servico_pagamentos.exception.RecursoNaoEncontradoException("Pedido de id " + pedidoId + " não encontrado"));
 
         if (pagamentoRepository.existsByPedidoId(pedidoId)) {
-            throw new RuntimeException("Este pedido já possui um pagamento gerado.");
+            throw new br.edu.ifpb.servico_pagamentos.exception.ConflitoDeEstadoException("Este pedido já possui um pagamento gerado.");
         }
 
         Cliente cliente = pedido.getCliente();
@@ -96,7 +95,7 @@ public class PagamentoService {
 
     public PagamentoResponse buscarPagamento(Long id) {
         Pagamento pagamento = pagamentoRepository.findById(id).orElseThrow(() ->
-                new RuntimeException("Pagamento não encontrado."));
+                new br.edu.ifpb.servico_pagamentos.exception.RecursoNaoEncontradoException("Pagamento de id " + id + " não encontrado."));
 
         return PagamentoMapper.toResponse(pagamento);
     }
@@ -106,7 +105,6 @@ public class PagamentoService {
                 .findByAsaasPaymentId(request.payment().id());
 
         if (pagamentoOpt.isEmpty()) {
-            // Pagamento não é nosso (criado fora do sistema) — ignora silenciosamente
             return;
         }
 

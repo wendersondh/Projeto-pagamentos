@@ -10,6 +10,8 @@ import br.edu.ifpb.servico_pagamentos.repository.ClienteRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @AllArgsConstructor
 public class ClienteService {
@@ -41,12 +43,11 @@ public class ClienteService {
     public ClienteResponse buscarCliente(Long id) {
         Cliente cliente = clienteRepository.findById(id)
                 .orElseThrow(() ->
-                        new RuntimeException("Cliente não encontrado."));
+                        new br.edu.ifpb.servico_pagamentos.exception.RecursoNaoEncontradoException("Cliente de id " + id + " não encontrado."));
 
         return ClienteMapper.toResponse(cliente);
     }
-    public ClienteResponse listarCliente() {
-        return clienteRepository.findAll().stream().map(ClienteMapper::toResponse).findFirst().orElseThrow(() ->
-                new RuntimeException("Nenhum cliente foi encontrado."));
+    public List<ClienteResponse> listarClientes() {
+        return clienteRepository.findAll().stream().map(ClienteMapper::toResponse).toList();
     }
 }

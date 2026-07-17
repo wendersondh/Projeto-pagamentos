@@ -26,8 +26,7 @@ public class PedidoService {
                 clienteRepository.findById(
                                 request.getClienteId())
                         .orElseThrow(() ->
-                                new RuntimeException(
-                                        "Cliente não encontrado"));
+                                new br.edu.ifpb.servico_pagamentos.exception.RecursoNaoEncontradoException("Cliente de id " + request.getClienteId() + " não encontrado"));
 
         Pedido pedido = Pedido.builder()
                 .descricao(request.getDescricao())
@@ -50,7 +49,7 @@ public class PedidoService {
     public PedidoResponse buscaPedido(long id){
         Pedido pedido = pedidoRepository.findById(id)
                 .orElseThrow(() ->
-                        new RuntimeException("Pedido não encontrado."));
+                        new br.edu.ifpb.servico_pagamentos.exception.RecursoNaoEncontradoException("Pedido de id " + id + " não encontrado."));
 
         return PedidoMapper.toResponse(pedido);
     }
